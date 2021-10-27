@@ -1,0 +1,13 @@
+ALTER TABLE walizka MODIFY kolor ENUM('rozowy','czerwony','teczowy','zolty') DEFAULT 'rozowy';
+
+CREATE TABLE walizka(id_walizki INT PRIMARY KEY AUTO_INCREMENT, pojemnosc INT UNSIGNED, kolor ENUM('rozowy','czerwony','teczowy','zolty'), id_wlasciciela INT, FOREIGN KEY (id_wlasciciela) REFERENCES postac(id_postaci) ON DELETE CASCADE);
+
+UPDATE postac SET wiek = 88 WHERE nazwa='Tesciowa';
+
+insert into postac values(3,'Tesciowa','kobieta','1932.04.12',89);
+
+insert into postac values(2,'Drozd','ptak','2018.04.05',3);
+
+insert into postac values(1,'Bjorn','wiking','1995.11.02',25);
+
+create table postac(id_postaci INT PRIMARY KEY AUTO_INCREMENT, nazwa VARCHAR(40), rodzaj ENUM('wiking','ptak','kobieta'), data_ur DATE, wiek INT UNSIGNED);
