@@ -1,0 +1,9 @@
+linux:
+nazwikso + 1 litera imienia
+haslo
+
+mysql:
+mysql -u login -p 
+
+nazwisko+1 litera imenia
+haslo imie123#@!A
