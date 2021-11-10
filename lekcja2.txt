@@ -1,0 +1,60 @@
+#zadanie 1.a
+delete from postac where nazwa='Ragnar';
+delete from postac where nazwa='Rollo';
+
+#zadanie 1.b
+alter table walizka drop foreign key walizka_ibfk_1;
+alter table przetwory drop foreign key przetwory_ibfk_1;
+alter table przetwory drop foreign key przetwory_ibfk_2;
+alter table postac drop primary key;
+
+#zadanie 2.a
+UPDATE postac set pesel='11111111111' where nazwa='Bjorn';
+UPDATE postac set pesel='22222222222' where nazwa='DROZD';
+UPDATE postac set pesel='33333333333' where nazwa='Tesciowa';
+UPDATE postac set pesel='44444444444' where nazwa='floki';
+UPDATE postac set pesel='55555555555' where nazwa='torvi';
+UPDATE postac set pesel='66666666666' where nazwa='athelstan';
+ALTER TABLE postac ADD CONSTRAINT PK_Postac PRIMARY KEY (pesel);
+
+#zadanie 2.b
+alter table postac modify column rodzaj ENUM('wiking','ptak','kobieta','syrena');
+
+#zadanie 2.c
+insert into postac(id_postaci,nazwa,rodzaj,data_ur,wiek,pesel) values (9,'Gertruda Nieszczera', 'syrena', '2001-12-05','20','77777777777')
+
+#zadanie 3.a
+update postac set nazwa_statku='Gothic' where nazwa like '%a%';
+
+#zadanie 3.b
+update statek set max_ladownosc = max_ladownosc*0.7 where data_wodowania like '19%';
+
+#zadanie 3.c
+ALTER TABLE postac ADD CONSTRAINT wiek_chk_1 CHECK (wiek < 1000);
+
+#zadanie 4.a
+insert into postac(id_postaci, nazwa, data_ur, wiek, pesel) values (8,'Loko','2002-02-12',19,'88888888888')
+
+#zadanie 4.b
+create table marynarz as select * from postac;
+
+#zadanie 4.c
+create table marynarz as select * from postac;
+
+#zadanie 5.a
+update marynarz set nazwa_statku=null;
+
+#zadanie 5.b
+delete from marynarz where nazwa='torvi';
+
+#zadanie 5.c
+alter table postac drop foreign key postac_ibfk_1;
+delete from statek where nazwa_statku = 'gothic';
+delete from statek where nazwa_statku = 'esmeralda';
+
+#zadanie 5.d
+drop table statek;
+
+#zadanie 5.e
+create table zwierz(id INT PRIMARY KEY AUTO_INCREMENT, nazwa VARCHAR(50), wiek INT);
+
