@@ -1,0 +1,34 @@
+#zad 1.1
+create table etapy_wyprawy(select * from wikingowie.etapy_wyprawy)
+create table uczestnicy(select * from wikingowie.uczestnicy)
+create table wyprawa(select * from wikingowie.wyprawa)
+create table sektor(select * from wikingowie.sektor)
+
+#zad 1.2
+select k.nazwa from kreatura as k left outer join uczestnicy as u on k.idkreatury=u.id_uczestnika where u.id_uczestnika is null;
+
+#zad 1.3
+select w.nazwa, count(e.ilosc) as ilosc_ekwipunku from wyprawa as w join uczestnicy as u on u.id_wyprawy = w.id_wyprawy join kreatura as k on k.idkreatury=u.id_uczestnika join ekwipunek as e on e.idkreatury =k.idkreatury group by w.nazwa;
+
+#zad 2.1
+select w.nazwa, count(u.id_uczestnika), group_concat(k.nazwa) from wyprawa as w join uczestnicy as u on u.id_wyprawy=w.id_wyprawy join kreatura as k on k.idkreatury=u.id_uczestnika group by w.nazwa;
+
+#zad 2.2
+select w.nazwa, e.kolejnosc,s.nazwa,k.nazwa from wyprawa as w join etapy_wyprawy as e on w.id_wyprawy=e.idwyprawy join sektor as s on s.id_sektora=e.sektor join uczestnicy as u on u.id_uczestnika=w.kierownik join kreatura as k on k.idkreatury=u.id_uczestnika order by w.data_rozpoczecia, e.kolejnosc;
+
+#zad 3.1
+select s.nazwa,count(e.sektor) from sektor as s left join etapy_wyprawy as e on s.id_sektora=e.sektor left join wyprawa as w on w.id_wyprawy = e.idwyprawy group by s.nazwa;
+
+#zad 3.2
+select k.nazwa, if(count(w.id_wyprawy)>0,"bral udzial w wyprawie","nie bral udzialu w wyprawie") as udzial from kreatura as k left join uczestnicy as u on u.id_uczestnika=k.idkreatury left join wyprawa as w on w.id_wyprawy=u.id_wyprawy group by k.nazwa;
+
+#zad 4.1
+select w.nazwa, sum(length(e.dziennik)) as liczba_znakow from wyprawa as w join etapy_wyprawy as e on w.id_wyprawy = e.idwyprawy group by w.nazwa having liczba_znakow<400;
+
+#zad 4.2
+select w.nazwa, sum(z.waga*z.ilosc)/count(id_uczestnika) as srednia from wyprawa as w join uczestnicy as u on w.id_wyprawy = u.id_wyprawy join kreatura as k on k.idkreatury=u.id_uczestnika join ekwipunek as e on e.idkreatury =k.idkreatury join zasob as z on z.idzasobu =e.idzasobu group by w.nazwa;
+
+#zad 5.1
+SELECT k.nazwa, DATEDIFF(w.data_rozpoczecia,k.dataUR) as wiek FROM kreatura as k JOIN uczestnicy as u ON u.id_uczestnika=k.idKreatury JOIN wyprawa as w ON w.id_wyprawy=u.id_wyprawy JOIN etapy_wyprawy as e ON e.idWyprawy=w.id_wyprawy JOIN sektor as s ON s.id_sektora=e.sektor WHERE s.nazwa LIKE "Chatka dziadka";
+
+

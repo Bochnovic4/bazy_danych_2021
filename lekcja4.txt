@@ -1,8 +1,8 @@
 #zadanie 1.1
-select sum(waga)/count(nazwa) nazwa from kreatura;
+select avg(waga) nazwa from kreatura where rodzaj="wiking";
 
 #zadanie 1.2
-select avg(waga) as "srednia waga", count(nazwa) as "liczba kreatur" from kreatura group by rodzaj;
+SELECT rodzaj,AVG(waga) from kreatura GROUP BY rodzaj;
 
 #zadanie 1.3
 select year(curdate())-avg(year(dataUr)) as "sredni wiek", rodzaj from kreatura group by rodzaj;
@@ -11,28 +11,32 @@ select year(curdate())-avg(year(dataUr)) as "sredni wiek", rodzaj from kreatura 
 select sum(waga) as "suma kg", rodzaj from zasob group by rodzaj;
 
 #zadanie 2.2
-select avg(waga*ilosc), nazwa from zasob group by nazwa having sum(ilosc)>=4 and sum(waga)>10;
+select avg(waga*ilosc), nazwa from zasob where ilosc >=4 group by nazwa having avg (waga)>10;
 
 #zadanie 2.3
-select distinct count(nazwa), rodzaj from zasob group by rodzaj having min(ilosc)>1;
+select rodzaj, count(distinct nazwa) from zasobgroup by rodzaj having min(ilosc) > 1;
 
 #zadanie 3.1
-select ekwipunek.idkreatury, sum(ilosc) from ekwipunek,kreatura where kreatura.idkreatury=ekwipunek.idkreatury group by ekwipunek.idkreatury;
+select nazwa,count(ilosc) from kreatura k INNER JOIN ekwipunek e ON k.idKreatury=e.idKreatury GROUP BY nazwa;
 
 #zadanie 3.2
-select kreatura.nazwa, sum(ekwipunek.ilosc) from zasob, ekwipunek, kreatura where ekwipunek.idZasobu=zasob.idZasobu and kreatura.idkreatury=ekwipunek.idkreatury group by kreatura.nazwa;
+select k.nazwa,z.nazwa from kreatura k INNER JOIN ekwipunek e ON k.idKreatury=e.idKreatury INNER JOIN zasob z ON e.idZasobu=z.idZasobu;
 
 #zadanie 3.3
-select nazwa,sum(ilosc) from kreatura left join ekwipunek on ekwipunek.idkreatury=kreatura.idkreatury group by nazwa;
+select k.nazwa, k.idKreatury ,e.idKreatury from kreatura k LEFT JOIN ekwipunek e ON k.idKreatury=e.idKreatury where e.idKreatury is NULL;
 
 #zadanie 4.1
-select kreatura.nazwa, zasob.nazwa, sum(ekwipunek.ilosc) from kreatura, zasob, ekwipunek where dataUr like "167%" and ekwipunek.idkreatury=kreatura.idkreatury and zasob.idzasobu = ekwipunek.idzasobu group by kreatura.nazwa, zasob.nazwa;
+select k.nazwa, z.nazwa from kreatura as k inner join ekwipunek as e on k.idkreatury=e.idkreatury inner join zasob as z on e.idzasobu=z.idzasobu where k.dataur like "167%";
+
 
 #zadanie 4.2
-select kreatura.nazwa,zasob.rodzaj, ekwipunek.idkreatury from kreatura,ekwipunek, zasob where (ekwipunek.idkreatury=kreatura.idkreatury and zasob.idzasobu=ekwipunek.idzasobu and zasob.rodzaj="jedzenie") group by kreatura.nazwa,zasob.rodzaj, ekwipunek.idkreatury,kreatura.dataur order by dataUr Desc limit 5;
+select * from kreatura k inner join ekwipunek e on k.idKreatury=e.idKreatury inner join zasob z on e.idZasobu=z.idZasobu where z.rodzaj='jedzenie' order by k.dataUr desc limit 5;
 
 #zadanie 4.3
+select k1.nazwa, k2.nazwa from kreatura k1 inner join kreatura k2 on k2.idkreatury-k1.idkreatury=5;
 
 #zadanie 5.1
+select k.rodzaj, sum(e.ilosc), avg(e.ilosc*z.waga) from kreatura k inner join ekwipunek e on k.idKreatury=e.idKreatury inner join zasob z on e.idZasobu=z.idZasobu where k.rodzaj not in ('malpa','waz') and e.ilosc <30 group by k.rodzaj having sum(e.ilosc) < 30;
 
 #zadanie 5.2
+select k.nazwa, k.rodzaj, k.dataUr from kreatura k, (select rodzaj, min(dataUr) as min, max(dataUr) as max from kreatura  group by rodzaj) as pod where k.dataUr=pod.min or k.dataUr=pod.max and k.rodzaj=pod.rodzaj;
